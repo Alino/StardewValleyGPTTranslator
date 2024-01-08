@@ -1,10 +1,10 @@
 ### Stardew Valley GPT Translator
 
-Translate all your stardew valley mods with OpenAPI GPT model.
+Translate all your stardew valley mods with OpenAI GPT model.
 
 ![Stardew Valley GPT Translator](logo.png)
 
-You need to have OpenAPI's API key! Put it into ENV variable named OPENAI_API_KEY 
+You need to have OpenAI's API key! Put it into ENV variable named OPENAI_API_KEY 
 
 You can use .env
 
