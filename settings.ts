@@ -8,6 +8,6 @@ export const Settings = {
     sourceLanguage: 'English',
     lookInDirectoriesNamed: 'i18n',
     sourceLanguageFileName: 'default.json',
-    openAPIModel: 'gpt-3.5-turbo'
-    // openAPIModel: 'gpt-4'
+    openAIModel: 'gpt-3.5-turbo'
+    // openAIModel: 'gpt-4'
 }

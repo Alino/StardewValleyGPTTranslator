@@ -150,6 +150,6 @@ Gender word declensions: Use correct gender word declensions for ${Settings.targ
 let's start! Here is the first input:
 { "data": ${chunk} }`
 }],
-    model: Settings.openAPIModel,
+    model: Settings.openAIModel,
   });
 }
