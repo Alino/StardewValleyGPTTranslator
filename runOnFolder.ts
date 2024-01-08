@@ -1,7 +1,7 @@
 import { main as translateFile } from './openai-translate';
 import path from 'path';
 import fs from 'fs';
-
+import { Settings } from './settings';
 
 function findI18nFolders(dir: string): string[] {
     let i18nFolders: string[] = [];
@@ -12,13 +12,13 @@ function findI18nFolders(dir: string): string[] {
   
       files.forEach(file => {
         const fullPath = path.join(currentDir, file);
-        const i18nPath = path.join(fullPath, 'i18n');
-        const defaultJsonPath = path.join(i18nPath, 'default.json');
-        const huJsonPath = path.join(i18nPath, 'hu.json');
+        const i18nPath = path.join(fullPath, Settings.lookInDirectoriesNamed);
+        const defaultJsonPath = path.join(i18nPath, Settings.sourceLanguageFileName);
+        const targetLanguageJsonPath = path.join(i18nPath, Settings.targetLanguageFileName);
   
         if (fs.statSync(fullPath).isDirectory()) {
           // Check for i18n folder in the current directory
-          if (fs.existsSync(i18nPath) && fs.existsSync(defaultJsonPath) && !fs.existsSync(huJsonPath)) {
+          if (fs.existsSync(i18nPath) && fs.existsSync(defaultJsonPath) && !fs.existsSync(targetLanguageJsonPath)) {
             i18nFolders.push(i18nPath);
           }
           // Continue searching in the subdirectory
@@ -32,7 +32,7 @@ function findI18nFolders(dir: string): string[] {
     return i18nFolders;
 }
 
-const inputDir = path.resolve('/Users/admin/Downloads/newMods');
+const inputDir = path.resolve(Settings.folderLocationToSearchIn);
 const i18nFolders = findI18nFolders(inputDir);
 
 console.log(5555555, JSON.stringify(i18nFolders, null, 2));
@@ -45,10 +45,10 @@ async function main() {
           continue;
         }
 
-        const defaultJsonPath = path.join(i18nPath, 'default.json');
-        const huJsonPath = path.join(i18nPath, 'hu.json');
-        console.log(`processing ${defaultJsonPath} to ${huJsonPath}`);
-        await translateFile(defaultJsonPath, huJsonPath);
+        const defaultJsonPath = path.join(i18nPath, Settings.sourceLanguageFileName);
+        const targetLanguageJsonPath = path.join(i18nPath, Settings.targetLanguageFileName);
+        console.log(`processing ${defaultJsonPath} to ${targetLanguageJsonPath}`);
+        await translateFile(defaultJsonPath, targetLanguageJsonPath);
     }
 }
 

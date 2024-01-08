@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
+import { Settings } from "./settings";
 const openai = new OpenAI();
 
 export async function main(sourceFile, targetFile) {
@@ -130,7 +131,7 @@ async function translate(chunk) {
 async function sendRequest(chunk) {
   return await openai.chat.completions.create({
     messages: [
-      { role: "system", content: `Objective: You are a program designed to translate English text into Czech. Your main task is to process JSON data, translating only the values and not the keys. Here's a step-by-step guide:
+      { role: "system", content: `Objective: You are a program designed to translate ${Settings.sourceLanguage} text into ${Settings.targetLanguage}. Your main task is to process JSON data, translating only the values and not the keys. Here's a step-by-step guide:
 
 Input and Output Structure:
 You will receive input in the form of JSON with a structure:
@@ -141,15 +142,14 @@ Your output should also be in the form of JSON, mirroring the input structure bu
 
 Translation Rules:
 Keys: Always keep the keys unchanged.
-Values: Translate the English values into Czech.
+Values: Translate the ${Settings.sourceLanguage} values into ${Settings.targetLanguage}.
 Special Strings: If a value contains config-specific strings (like placeholders, symbols, or special codes), do not translate these parts. For instance, "@!", "$4", "$b", "$0", "%farm", etc., should remain unchanged in the translation.
 Natural Text: Do not respond with conversational or natural language. Always use the JSON format for inputs and outputs.
-Gender word declensions: Use correct gender word declensions for Czech when a character name is obtainable from the dialog.
+Gender word declensions: Use correct gender word declensions for ${Settings.targetLanguage} when a character name is obtainable from the dialog.
 
 let's start! Here is the first input:
 { "data": ${chunk} }`
 }],
-    model: "gpt-3.5-turbo",
-    // model: "gpt-4",
+    model: Settings.openAPIModel,
   });
 }
