@@ -8,7 +8,11 @@ You need to have OpenAPI's API key! Put it into ENV variable named OPENAI_API_KE
 
 You can use .env
 
+
 **Change settings.ts to match your needs.**
+
+bun is required to run this https://bun.sh/
+(node.js will probably work too)
 
 #### Two scripts:
 ```bun runSingleFile``` runs the translation on the file you choose in the runOnFolder.ts file
