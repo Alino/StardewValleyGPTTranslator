@@ -91,7 +91,7 @@ function loadFile(fileName: string) {
 function removeCommentsFromJSON(json: string) {
   return json
   .replace(/\/\*[\s\S]*?\*\//gm, "") // multi-line comments
-  .replace(/\/[^\r\n"]*$(?![^\[]*])/gm, "") // single-line comments
+  .replace(/\/\/[^\r\n]*$|\/[^\r\n"]*"(?:\\"|[^"])*"$(?![^\[]*])/gm, "") // single-line comments
 }
 
 function saveFile(fileContent, fileName: string) {
