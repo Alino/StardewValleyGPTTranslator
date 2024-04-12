@@ -1,0 +1,29 @@
+{
+    "config.PlayerTitle.description": "Choose how your children call you.",
+    "config.SpouseTitle.description": "Choose how your children call your spouse.",
+    "config.VanillaDarkSkinToddler.description": "Select this for dark skin boy and you aren't using any custom children sprite mod.",
+    "config.VanillaDarkSkinToddlerGirl.description": "Select this for dark skin girl and you aren't using any custom children sprite mod.",
+    "config.AlternativeTextureToddlerSprites.description": "Read MOD page description before using this. Select this if you are using Alternative Texture MOD for toddler sprite, such as Lumisteria Toddlers Like Parents - Alternative Children.",
+    "config.GirlName.description": "Type your daughter's name here",
+    "config.BoyName.description": "Type your son's name here",
+    "config.UsePortraitMOD.description": "Tick this if you are using a content patcher MOD that modifies the children's portraits during events such as Immersive Children- Portraits and Sprites",
+
+//Baby Stage Events
+//Kid 1
+    
+    //Event 1 (Birth) 172420000
+
+"Kid1_0H_01":"Oh, our little angel...$4",
+"Kid1_0H_02":"@, this might be the happiest day of my life...$4#$b#I'm gonna treasure this memory forever...$4",
+"Kid1_0H_02.1":"Oh, so adorable...",
+"Kid2_Milk_04":"Oops, we got carried away with our conversation and forgot about %kid2's feeding time.$s#$b#Let's hurry over.",
+"Kid2_Milk_05":"%But as you approach the baby crib, you find out...",
+"Kid2_Milk_06":"Don't cry, little sis!#$b#Big bro's here with you!",//Need Update
+"Kid2_Milk_06_girl":"Don't cry, little bro!#$b#Big sis's here with you!",//Need Update
+"Kid2_Milk_07":"Big bro's here with you!",//
+"Kid2_Milk_07_girl":"Big sis's here with you!",//
+"Kid2_Milk_08":"Look, this is your milk bottle!#$b#Sip slowly, no crying, okay?",//Need Update
+"Kid2_Milk_09":"Sip slowly, no crying, okay?",//
+"Kid2_Milk_10":"%With the bottle in his tiny hands, %kid2's crying gradually ceases, and he begins to drink the milk slowly.",
+"Kid2_Milk_10_girl":"%With the bottle in her tiny hands, %kid2's crying gradually ceases, and she begins to drink the milk slowly."
+}

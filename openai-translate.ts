@@ -2,7 +2,9 @@ import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
 import { Settings } from "./settings";
+import { loadFile } from "./jsonParser";
 const openai = new OpenAI();
+
 
 export async function main(sourceFile, targetFile) {
   await runProcess(sourceFile, targetFile);
@@ -48,50 +50,6 @@ async function runProcess(sourceFile: string, targetFile: string) {
   }
 
   saveFile(newJson, targetFile);
-}
-
-function loadFile(fileName: string) {
-  console.log(`loading file ${fileName}`);
-  let fileContent;
-
-  try {
-    fileContent = fs.readFileSync(path.resolve(__dirname, fileName)).toString();
-  } catch {
-    console.error(`file ${fileName} not found`);
-    throw new Error(`file ${fileName} not found`);
-  }
-
-  console.log(`loaded file ${fileName}`);
-
-
-  console.log(`removing comments from ${fileName}`);
-  fileContent = removeCommentsFromJSON(fileContent);
-
-  // Replace non-standard whitespace characters with a standard space
-  fileContent = fileContent.replace(/[\s]+/g, ' ');
-
-  // remove trailing comma at the end of the json
-  fileContent = fileContent.replace(/,(?!\s*?[{["'\w])/g, '');
-  
-
-  let parsedJson;
-
-  console.log(111111, fileContent.toString());
-  try {
-    parsedJson = JSON.parse(fileContent.toString());
-  } catch (err) {
-    console.error(err);
-    console.error(`file ${fileName} is not valid json`);
-    throw new Error(`file ${fileName} is not valid json. Error: ${err}`);
-  }
-
-  return parsedJson;
-}
-
-function removeCommentsFromJSON(json: string) {
-  return json
-  .replace(/\/\*[\s\S]*?\*\//gm, "") // multi-line comments
-  .replace(/\/\/[^\r\n]*$|\/[^\r\n"]*"(?:\\"|[^"])*"$(?![^\[]*])/gm, "") // single-line comments
 }
 
 function saveFile(fileContent, fileName: string) {
