@@ -5,6 +5,7 @@
 
 import fs from "fs";
 import path from "path";
+import hjson from "hjson";
 
 export function loadFile(fileName: string) {
     console.log(`loading file ${fileName}`);
@@ -39,12 +40,22 @@ export function loadFile(fileName: string) {
     } catch (err) {
       console.error(err);
       console.error(`file ${fileName} is not valid json`);
-      throw new Error(`file ${fileName} is not valid json. Error: ${err}`);
+      parsedJson = hjsonFallbackParse(fileContent);
     }
   
     return parsedJson;
   }
   
+  function hjsonFallbackParse(fileContent: string) {
+    console.log(`falling back to hjson parsing`);
+    try {
+      return hjson.parse(fileContent);
+    } catch (err) {
+      console.error(err);
+      throw new Error(`file is not valid hjson. Error: ${err}`);
+    }
+  }
+
   function removeCommentsFromJSON(json: string) {
     return json
     .replace(/\/\*[\s\S]*?\*\//gm, "") // multi-line comments
