@@ -35,10 +35,12 @@ function findI18nFolders(dir: string): string[] {
 const inputDir = path.resolve(Settings.folderLocationToSearchIn);
 const i18nFolders = findI18nFolders(inputDir);
 
-console.log(5555555, JSON.stringify(i18nFolders, null, 2));
+console.log(`Found ${i18nFolders.length} folders`, JSON.stringify(i18nFolders, null, 2));
 
 
 async function main() {
+    console.log(`Translating ${i18nFolders.length} folders...`);
+    await new Promise(resolve => setTimeout(resolve, 3000));
     for (let i = 0; i < i18nFolders.length; i++) {
         const i18nPath = i18nFolders[i];
         if (i18nPath === undefined) {

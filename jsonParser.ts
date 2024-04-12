@@ -32,7 +32,7 @@ export function loadFile(fileName: string) {
   
     let parsedJson;
   
-    console.log(111111, fileContent.toString());
+    // console.log(111111, fileContent.toString());
     try {
       console.log(`parsing json from ${fileName}`);
       parsedJson = JSON.parse(fileContent.toString());

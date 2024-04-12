@@ -5,51 +5,59 @@ import { Settings } from "./settings";
 import { loadFile } from "./jsonParser";
 const openai = new OpenAI();
 
+type JSONValue = string | number | boolean | { [key: string]: JSONValue } | JSONValue[];
+type Chunk = Record<string, JSONValue>;
+
+const KEYS_PER_CHUNK = 10;
+const CONCURRENCY_LIMIT = 2;
+
 
 export async function main(sourceFile, targetFile) {
   await runProcess(sourceFile, targetFile);
 }
 
 async function runProcess(sourceFile: string, targetFile: string) {
-  const newJson = {};
-
-  let chunk = {};
-  const sourceJson = loadFile(sourceFile);
+  const newJson: Record<string, JSONValue> = {};
+  const sourceJson = loadFile(sourceFile) as Record<string, JSONValue>;
   const keys = Object.keys(sourceJson);
-  console.log(`the loaded json has ${keys.length} keys...`);
-  for (let i = 0; i < keys.length; i++) {
-    const key = keys[i];
+  console.log(`The loaded json has ${keys.length} keys...`);
+
+  const chunks: Chunk[] = [];
+  let chunk: Chunk = {};
+
+  keys.forEach((key, index) => {
     if (key.startsWith("Config.")) {
       newJson[key] = sourceJson[key];
-      continue;
-    }
-    const value = sourceJson[key];
-    chunk[key] = value;
-    if (i % 5 === 0 && i !== 0) { // Added condition to ensure first iteration doesn't trigger this
-      try {
-        let chunkOutput = await translate(JSON.stringify(chunk));
-        Object.assign(newJson, chunkOutput.data);
-        console.log(JSON.stringify(chunkOutput.data, null, 2));
-      } catch (err) {
-        console.error(err);
+    } else {
+      chunk[key] = sourceJson[key];
+      if ((index + 1) % KEYS_PER_CHUNK === 0) {
+        chunks.push(chunk);
+        chunk = {};
       }
-      chunk = {};
     }
-    console.log(`processed ${i+1} of ${keys.length}`);
+  });
+
+  if (Object.keys(chunk).length > 0) {
+    chunks.push(chunk);
   }
 
-  // Process any remaining items in the chunk after the loop
-  if (Object.keys(chunk).length > 0) {
+  // Process chunks in batches of the defined concurrency limit
+  for (let i = 0; i < chunks.length; i += CONCURRENCY_LIMIT) {
+    const batch = chunks.slice(i, i + CONCURRENCY_LIMIT).map(chunk => translate(JSON.stringify(chunk)));
+    console.log(`Translating chunk ${i + 1}/${chunks.length}...`);
     try {
-      let chunkOutput = await translate(JSON.stringify(chunk));
-      Object.assign(newJson, chunkOutput.data);
-      console.log(JSON.stringify(chunkOutput.data, null, 2));
+      const results = await Promise.all(batch);
+      console.log('Results:', results);
+      results.forEach(result => {
+        Object.assign(newJson, result.data);
+      });
     } catch (err) {
-      console.error(err);
+      console.error("Error in translating chunks:", err);
     }
   }
 
   saveFile(newJson, targetFile);
+  console.log('Translation process completed.');
 }
 
 function saveFile(fileContent, fileName: string) {
