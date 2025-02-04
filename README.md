@@ -9,6 +9,7 @@ Welcome to the Stardew Valley GPT Translator! This tool allows you to translate 
 1. You need to have an OpenAI API key. Once you have it, store it in an environment variable named `OPENAI_API_KEY`. You can use a `.env` file to do this.
 
 2. You need to have `bun` installed on your system to run this tool. You can download it from [bun.sh](https://bun.sh/). If you prefer, you can also use Node.js.
+3. run `bun install` to install dependecies
 
 ## Configuration
 
